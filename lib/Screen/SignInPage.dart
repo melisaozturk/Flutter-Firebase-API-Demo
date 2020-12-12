@@ -189,9 +189,10 @@ class _SignInState extends State<SignIn> {
               _checking == false ? RaisedButton(
                 color: Colors.blue,
                 child: Text("Sign in with Facebook"),
-                onPressed: _userData != null ? _logOut : _login,
-              )
-                  :  (_userData != null ? prettyPrint(_userData) : Text(""))//TODO goto profile
+                onPressed: () {
+                  print(_userData);
+                  _userData != null ? _logOut : _login;
+                }
             ],
           ),
         ));
