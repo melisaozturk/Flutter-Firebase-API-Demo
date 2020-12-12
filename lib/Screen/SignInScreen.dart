@@ -1,7 +1,17 @@
 import 'package:flutter/material.dart';
 import 'SignUpScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'dart:convert';
+
 //import 'package:firebase_core/firebase_core.dart';
+
+
+String prettyPrint(Map json) {
+  JsonEncoder encoder = new JsonEncoder.withIndent('  ');
+  String pretty = encoder.convert(json);
+  return pretty;
+}
 
 FirebaseAuth auth = FirebaseAuth.instance;
 
@@ -11,6 +21,98 @@ class SignIn extends StatefulWidget {
 }
 
 class _SignInState extends State<SignIn> {
+
+  Map<String, dynamic> _userData;
+  AccessToken _accessToken;
+  bool _checking = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkIfIsLogged(); // check if the user has an active session
+  }
+
+  /// uses the facebook SDK to check if a user has an active session
+  Future<void> _checkIfIsLogged() async {
+    final AccessToken accessToken = await FacebookAuth.instance.isLogged;
+    setState(() {
+      _checking = false;
+    });
+    if (accessToken != null) {
+      // if the user is logged
+      print("is Logged:::: ${prettyPrint(accessToken.toJson())}");
+      // now you can call to  FacebookAuth.instance.getUserData();
+      final userData = await FacebookAuth.instance.getUserData();
+      // final userData = await FacebookAuth.instance.getUserData(fields: "email,birthday,friends,gender,link");
+      _accessToken = accessToken;
+      setState(() {
+        _userData = userData;
+      });
+    }
+  }
+
+
+  /// print the access token data in the console
+  void _printCredentials() {
+    print(
+      prettyPrint(_accessToken.toJson()),
+    );
+  }
+
+  Future<void> _login() async {
+    try {
+      // show a circular progress indicator
+      setState(() {
+        _checking = true;
+      });
+      _accessToken = await FacebookAuth.instance.login(); // by the fault we request the email and the public profile
+
+      // loginBehavior is only supported for Android devices, for ios it will be ignored
+      // _accessToken = await FacebookAuth.instance.login(
+      //   permissions: ['email', 'public_profile', 'user_birthday', 'user_friends', 'user_gender', 'user_link'],
+      //   loginBehavior:
+      //       LoginBehavior.DIALOG_ONLY, // (only android) show an authentication dialog instead of redirecting to facebook app
+      // );
+      _printCredentials();
+      // get the user data
+      // by default we get the userId, email,name and picture
+      final userData = await FacebookAuth.instance.getUserData();
+      // final userData = await FacebookAuth.instance.getUserData(fields: "email,birthday,friends,gender,link");
+      _userData = userData;
+    } on FacebookAuthException catch (e) {
+      // if the facebook login fails
+      print(e.message); // print the error message in console
+      // check the error type
+      switch (e.errorCode) {
+        case FacebookAuthErrorCode.OPERATION_IN_PROGRESS:
+          print("You have a previous login operation in progress");
+          break;
+        case FacebookAuthErrorCode.CANCELLED:
+          print("login cancelled");
+          break;
+        case FacebookAuthErrorCode.FAILED:
+          print("login failed");
+          break;
+      }
+    } catch (e, s) {
+      // print in the logs the unknown errors
+      print(e);
+      print(s);
+    } finally {
+      // update the view
+      setState(() {
+        _checking = false;
+      });
+    }
+  }
+
+  Future<void> _logOut() async {
+    await FacebookAuth.instance.logOut();
+    _accessToken = null;
+    _userData = null;
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -81,14 +183,15 @@ class _SignInState extends State<SignIn> {
                 color: Colors.pink,
               ),
 
+             // _accessToken != null ? Text(prettyPrint(_accessToken.toJson()));
+
               /// Sign in with Facebook
-              RaisedButton(
-                onPressed: () async {
-                  // TODO Facebook sign in
-                },
-                child: Text("Sign In With Facebook"),
+              _checking == false ? RaisedButton(
                 color: Colors.blue,
+                child: Text("Sign in with Facebook"),
+                onPressed: _userData != null ? _logOut : _login,
               )
+                  :  (_userData != null ? prettyPrint(_userData) : Text(""))//TODO goto profile
             ],
           ),
         ));
