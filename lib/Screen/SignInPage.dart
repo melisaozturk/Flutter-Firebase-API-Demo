@@ -51,28 +51,47 @@ class _SignInState extends State<SignIn> {
       prettyPrint(_accessToken.toJson()),
     );
   }
+/*
+  Future<UserCredential> _login() async {
+    // Trigger the sign-in flow
+    final AccessToken result = await FacebookAuth.instance.login();
 
+    // Create a credential from the access token
+    final FacebookAuthCredential facebookAuthCredential =
+    FacebookAuthProvider.credential(result.token);
+    _accessToken = result;
+    final userData = await FacebookAuth.instance.getUserData(fields: "email,birthday,friends,gender,link");
+    _userData = userData;
+    // Once signed in, return the UserCredential
+    return await FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
+  }
+*/
   Future<void> _login() async {
     try {
       // show a circular progress indicator
       setState(() {
         _checking = true;
       });
-      _accessToken = await FacebookAuth.instance
-          .login(); // by the fault we request the email and the public profile
+      _accessToken = await FacebookAuth.instance.login(); // by the fault we request the email and the public profile
 
       // loginBehavior is only supported for Android devices, for ios it will be ignored
-      // _accessToken = await FacebookAuth.instance.login(
-      //   permissions: ['email', 'public_profile', 'user_birthday', 'user_friends', 'user_gender', 'user_link'],
-      //   loginBehavior:
-      //       LoginBehavior.DIALOG_ONLY, // (only android) show an authentication dialog instead of redirecting to facebook app
-      // );
+      /* _accessToken = await FacebookAuth.instance.login(
+         permissions: ['email', 'public_profile', 'user_birthday', 'user_friends', 'user_gender', 'user_link'],
+         loginBehavior:
+             LoginBehavior.DIALOG_ONLY, // (only android) show an authentication dialog instead of redirecting to facebook app
+       );*/
       _printCredentials();
       // get the user data
       // by default we get the userId, email,name and picture
       final userData = await FacebookAuth.instance.getUserData();
       // final userData = await FacebookAuth.instance.getUserData(fields: "email,birthday,friends,gender,link");
       _userData = userData;
+
+      final FacebookAuthCredential facebookAuthCredential =
+      FacebookAuthProvider.credential(_accessToken.token);
+
+      await FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
+
     } on FacebookAuthException catch (e) {
       // if the facebook login fails
       print(e.message); // print the error message in console
@@ -177,7 +196,7 @@ class _SignInState extends State<SignIn> {
                 ),
 
                 /// if not sign up got to Sign up
-                RaisedButton(
+                MaterialButton(
                   onPressed: () async {
                     Navigator.push(
                         context, MaterialPageRoute(builder: (_) => SignUp()));
@@ -185,8 +204,6 @@ class _SignInState extends State<SignIn> {
                   child: Text("SignUp With Email"),
                   color: Colors.pink,
                 ),
-
-                // _accessToken != null ? Text(prettyPrint(_accessToken.toJson()));
 
                 /// Sign in with Facebook                     //TODO goto profile main den yapılıyor.
                 MaterialButton(

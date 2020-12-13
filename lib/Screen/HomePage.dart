@@ -21,6 +21,7 @@ class _HomePageState extends State<HomePage> {
             RaisedButton(
               onPressed: () async {
                 await FirebaseAuth.instance.signOut();
+                await FacebookAuth.instance.logOut();
               },
               child: Text("Logout"),
             )
