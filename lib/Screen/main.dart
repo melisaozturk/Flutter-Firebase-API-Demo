@@ -51,7 +51,6 @@ class _HomeState extends State<Home> {
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.active) {
                 User user = snapshot.data;
-
                 if (user == null) {
                   return SignIn();
                 } else {

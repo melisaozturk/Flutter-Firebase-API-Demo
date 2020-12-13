@@ -18,32 +18,6 @@ class SignIn extends StatefulWidget {
 class _SignInState extends State<SignIn> {
   Map<String, dynamic> _userData;
   AccessToken _accessToken;
-  bool _checking = true;
-
-  @override
-  void initState() {
-    super.initState();
-    _checkIfIsLogged(); // check if the user has an active session
-  }
-
-  /// uses the facebook SDK to check if a user has an active session
-  Future<void> _checkIfIsLogged() async {
-    final AccessToken accessToken = await FacebookAuth.instance.isLogged;
-    setState(() {
-      _checking = false;
-    });
-    if (accessToken != null) {
-      // if the user is logged
-      print("is Logged:::: ${prettyPrint(accessToken.toJson())}");
-      // now you can call to  FacebookAuth.instance.getUserData();
-      final userData = await FacebookAuth.instance.getUserData();
-      // final userData = await FacebookAuth.instance.getUserData(fields: "email,birthday,friends,gender,link");
-      _accessToken = accessToken;
-      setState(() {
-        _userData = userData;
-      });
-    }
-  }
 
   /// print the access token data in the console
   void _printCredentials() {
@@ -51,27 +25,10 @@ class _SignInState extends State<SignIn> {
       prettyPrint(_accessToken.toJson()),
     );
   }
-/*
-  Future<UserCredential> _login() async {
-    // Trigger the sign-in flow
-    final AccessToken result = await FacebookAuth.instance.login();
 
-    // Create a credential from the access token
-    final FacebookAuthCredential facebookAuthCredential =
-    FacebookAuthProvider.credential(result.token);
-    _accessToken = result;
-    final userData = await FacebookAuth.instance.getUserData(fields: "email,birthday,friends,gender,link");
-    _userData = userData;
-    // Once signed in, return the UserCredential
-    return await FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
-  }
-*/
   Future<void> _login() async {
     try {
-      // show a circular progress indicator
-      setState(() {
-        _checking = true;
-      });
+      // TODO show a circular progress indicator
       _accessToken = await FacebookAuth.instance.login(); // by the fault we request the email and the public profile
 
       // loginBehavior is only supported for Android devices, for ios it will be ignored
@@ -112,10 +69,7 @@ class _SignInState extends State<SignIn> {
       print(e);
       print(s);
     } finally {
-      // update the view
-      setState(() {
-        _checking = false;
-      });
+      // TODO update the view
     }
   }
 
@@ -146,7 +100,7 @@ class _SignInState extends State<SignIn> {
 
     FirebaseAuth.instance.authStateChanges().listen((User user) {
       if (user == null) {
-        print('An error occured!');
+        print('User null!');
       } else {
         print('User is signed in!');
       }
