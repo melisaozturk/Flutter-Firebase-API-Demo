@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'SignUpScreen.dart';
+import 'SignUpPage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'dart:convert';
-
-//import 'package:firebase_core/firebase_core.dart';
-
 
 String prettyPrint(Map json) {
   JsonEncoder encoder = new JsonEncoder.withIndent('  ');
@@ -13,15 +10,12 @@ String prettyPrint(Map json) {
   return pretty;
 }
 
-FirebaseAuth auth = FirebaseAuth.instance;
-
 class SignIn extends StatefulWidget {
   @override
   _SignInState createState() => _SignInState();
 }
 
 class _SignInState extends State<SignIn> {
-
   Map<String, dynamic> _userData;
   AccessToken _accessToken;
   bool _checking = true;
@@ -51,7 +45,6 @@ class _SignInState extends State<SignIn> {
     }
   }
 
-
   /// print the access token data in the console
   void _printCredentials() {
     print(
@@ -65,7 +58,8 @@ class _SignInState extends State<SignIn> {
       setState(() {
         _checking = true;
       });
-      _accessToken = await FacebookAuth.instance.login(); // by the fault we request the email and the public profile
+      _accessToken = await FacebookAuth.instance
+          .login(); // by the fault we request the email and the public profile
 
       // loginBehavior is only supported for Android devices, for ios it will be ignored
       // _accessToken = await FacebookAuth.instance.login(
@@ -113,6 +107,33 @@ class _SignInState extends State<SignIn> {
     setState(() {});
   }
 
+  String _email;
+  String _password;
+
+  Future<void> _signIn() async {
+    try {
+      UserCredential _ =
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: _email,
+          password: _password);
+      print("Sign in succesful");
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        print('No user found for that email.');
+      } else if (e.code == 'wrong-password') {
+        print('Wrong password provided for that user.');
+      }
+    }
+
+    FirebaseAuth.instance.authStateChanges().listen((User user) {
+      if (user == null) {
+        print('An error occured!');
+      } else {
+        print('User is signed in!');
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -121,79 +142,60 @@ class _SignInState extends State<SignIn> {
           backgroundColor: Colors.pink,
         ),
         body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              TextField(
-                obscureText: true,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'UserName',
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                TextField(
+                  onChanged: (value) {
+                    _email = value;
+                  },
+                  decoration: InputDecoration(
+                    labelText: 'Email',
+                  ),
                 ),
-              ),
-              TextField(
-                obscureText: true,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Password',
+                TextField(
+                  obscureText: true,
+                  onChanged: (value) {
+                    _password = value;
+                  },
+                  decoration: InputDecoration(
+                    labelText: 'Password',
+                  ),
                 ),
-              ),
 
-              SizedBox(
-                height: 30,
-              ),
+                SizedBox(
+                  height: 30,
+                ),
 
-              /// Sign in
-              RaisedButton(
-                onPressed: () async {
-                  try {
-                    UserCredential _ =
-                        await FirebaseAuth.instance.signInWithEmailAndPassword(
-                            // TODO: set textfield data
-                            email: "melisa.ozturk@example.com",
-                            password: "SuperSecretPassword!");
-                      print("Sign in succesful");
-                  } on FirebaseAuthException catch (e) {
-                    if (e.code == 'user-not-found') {
-                      print('No user found for that email.');
-                    } else if (e.code == 'wrong-password') {
-                      print('Wrong password provided for that user.');
-                    }
-                  }
+                /// Sign in with email
+                MaterialButton(
+                  onPressed: _signIn,
+                  child: Text("Sign In"),
+                  color: Colors.lightGreen,
+                ),
 
-                  FirebaseAuth.instance.authStateChanges().listen((User user) {
-                    if (user == null) {
-                      print('An error occured!');
-                    } else {
-                      print('User is signed in!');
-                    }
-                  });
-                },
-                child: Text("Sign In"),
-                color: Colors.lightGreen,
-              ),
+                /// if not sign up got to Sign up
+                RaisedButton(
+                  onPressed: () async {
+                    Navigator.push(
+                        context, MaterialPageRoute(builder: (_) => SignUp()));
+                  },
+                  child: Text("SignUp With Email"),
+                  color: Colors.pink,
+                ),
 
-              /// if not sign up got to Sign up
-              RaisedButton(
-                onPressed: () async {
-                  Navigator.push(
-                      context, MaterialPageRoute(builder: (_) => SignUp()));
-                },
-                child: Text("SignUp With Email"),
-                color: Colors.pink,
-              ),
+                // _accessToken != null ? Text(prettyPrint(_accessToken.toJson()));
 
-             // _accessToken != null ? Text(prettyPrint(_accessToken.toJson()));
-
-              /// Sign in with Facebook
-              _checking == false ? RaisedButton(
-                color: Colors.blue,
-                child: Text("Sign in with Facebook"),
-                onPressed: () {
-                  print(_userData);
-                  _userData != null ? _logOut : _login;
-                }
-            ],
+                /// Sign in with Facebook                     //TODO goto profile main den yapılıyor.
+                MaterialButton(
+                    color: Colors.blue,
+                    child: Text("Sign in with Facebook"),
+                    onPressed: _userData != null ? _logOut : _login
+                )
+              ],
+            ),
           ),
         ));
   }
