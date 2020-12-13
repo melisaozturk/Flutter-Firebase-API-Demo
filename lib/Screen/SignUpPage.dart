@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-//import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_firebase_demo/PageUtil.dart';
 
 FirebaseAuth auth = FirebaseAuth.instance;
 
@@ -10,16 +11,13 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
-
   String _email;
   String _password;
 
   Future<void> _createUser() async {
     try {
-      UserCredential _ = await FirebaseAuth.instance.createUserWithEmailAndPassword(
-          email: _email,
-          password: _password
-      );
+      UserCredential _ = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(email: _email, password: _password);
       print("Sign up succesful");
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
@@ -34,44 +32,39 @@ class _SignUpState extends State<SignUp> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("SignUp"),
-        backgroundColor: Colors.pink,
-      ),
-
-      body: Padding(
+    return MyTopBar(
+      text: "Sign In",
+      uniqueHeroTag: "signin",
+      child: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              TextField(
-                onChanged: (value) {
-                  _email = value;
-                },
-                decoration: InputDecoration(
-                  labelText: 'Email',
+        child: Container(
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                CupertinoTextField(
+                  placeholder: 'Email',
+                  onChanged: (value) {
+                    _email = value;
+                  },
                 ),
-              ),
-              TextField(
-                obscureText: true,
-                onChanged: (value) {
-                  _password = value;
-                },
-                decoration: InputDecoration(
-                  labelText: 'Password',
+                CupertinoTextField(
+                  placeholder: 'Password',
+                  obscureText: true,
+                  onChanged: (value) {
+                    _password = value;
+                  },
                 ),
-              ),
-
-              SizedBox(height: 30,),
-
-              MaterialButton(
-                onPressed: _createUser,
-                child: Text("SignUp"),
-                color: Colors.pink,
-              )
-            ],
+                SizedBox(
+                  height: 30,
+                ),
+                CupertinoButton(
+                  onPressed: _createUser,
+                  child: Text("SignUp"),
+                  color: Colors.redAccent,
+                )
+              ],
+            ),
           ),
         ),
       ),

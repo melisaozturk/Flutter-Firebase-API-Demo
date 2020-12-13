@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_firebase_demo/PageUtil.dart';
 import 'SignUpPage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'dart:convert';
+import 'package:flutter/cupertino.dart';
 
 String prettyPrint(Map json) {
   JsonEncoder encoder = new JsonEncoder.withIndent('  ');
@@ -29,7 +31,8 @@ class _SignInState extends State<SignIn> {
   Future<void> _login() async {
     try {
       // TODO show a circular progress indicator
-      _accessToken = await FacebookAuth.instance.login(); // by the fault we request the email and the public profile
+      _accessToken = await FacebookAuth.instance
+          .login(); // by the fault we request the email and the public profile
 
       // loginBehavior is only supported for Android devices, for ios it will be ignored
       /* _accessToken = await FacebookAuth.instance.login(
@@ -45,10 +48,9 @@ class _SignInState extends State<SignIn> {
       _userData = userData;
 
       final FacebookAuthCredential facebookAuthCredential =
-      FacebookAuthProvider.credential(_accessToken.token);
+          FacebookAuthProvider.credential(_accessToken.token);
 
       await FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
-
     } on FacebookAuthException catch (e) {
       // if the facebook login fails
       print(e.message); // print the error message in console
@@ -85,10 +87,8 @@ class _SignInState extends State<SignIn> {
 
   Future<void> _signIn() async {
     try {
-      UserCredential _ =
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: _email,
-          password: _password);
+      UserCredential _ = await FirebaseAuth.instance
+          .signInWithEmailAndPassword(email: _email, password: _password);
       print("Sign in succesful");
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
@@ -109,65 +109,62 @@ class _SignInState extends State<SignIn> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: Text("Sign In"),
-          backgroundColor: Colors.pink,
-        ),
-        body: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                TextField(
-                  onChanged: (value) {
-                    _email = value;
-                  },
-                  decoration: InputDecoration(
-                    labelText: 'Email',
+    return MyTopBar(
+        text: "Sign In",
+        uniqueHeroTag: "signin",
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Container(
+              child: Center(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CupertinoTextField(
+                    placeholder: "Email",
+                    onChanged: (value) {
+                      _email = value;
+                    },
                   ),
-                ),
-                TextField(
-                  obscureText: true,
-                  onChanged: (value) {
-                    _password = value;
-                  },
-                  decoration: InputDecoration(
-                    labelText: 'Password',
+                  CupertinoTextField(
+                    placeholder: 'Password',
+                    obscureText: true,
+                    onChanged: (value) {
+                      _password = value;
+                    },
                   ),
-                ),
 
-                SizedBox(
-                  height: 30,
-                ),
+                  SizedBox(
+                    height: 30,
+                  ),
 
-                /// Sign in with email
-                MaterialButton(
-                  onPressed: _signIn,
-                  child: Text("Sign In"),
-                  color: Colors.lightGreen,
-                ),
+                  /// Sign in with email
+                  CupertinoButton(
+                    onPressed: _signIn,
+                    child: Text("Sign In"),
+                    color: Colors.lightGreen,
+                  ),
 
-                /// if not sign up got to Sign up
-                MaterialButton(
-                  onPressed: () async {
-                    Navigator.push(
-                        context, MaterialPageRoute(builder: (_) => SignUp()));
-                  },
-                  child: Text("SignUp With Email"),
-                  color: Colors.pink,
-                ),
+                  /// if not sign up
+                  CupertinoButton(
+                    onPressed: () async {
+                      Navigator.push(
+                          context, MaterialPageRoute(builder: (_) => SignUp()));
+                    },
+                    child: Text("SignUp With Email"),
+                    color: Colors.redAccent,
+                  ),
 
-                /// Sign in with Facebook                     //TODO goto profile main den yapılıyor.
-                MaterialButton(
-                    color: Colors.blue,
-                    child: Text("Sign in with Facebook"),
-                    onPressed: _userData != null ? _logOut : _login
-                )
-              ],
+                  /// Sign in with Facebook
+                  CupertinoButton(
+                      color: Colors.blue,
+                      child: Text("Sign in with Facebook"),
+                      onPressed: _userData != null ? _logOut : _login)
+                ],
+              ),
             ),
-          ),
+          )),
         ));
   }
 }

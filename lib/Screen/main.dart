@@ -1,8 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_firebase_demo/Screen/HomePage.dart';
+//import 'package:flutter_firebase_demo/Screen/HomePage.dart';
 import 'package:flutter_firebase_demo/Screen/SignInPage.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_firebase_demo/Screen/TabbarPage.dart';
+
 
 void main() {
   runApp(MyApp());
@@ -54,7 +57,13 @@ class _HomeState extends State<Home> {
                 if (user == null) {
                   return SignIn();
                 } else {
-                  return HomePage();
+                  return  new CupertinoApp(
+                    home: new Tabbar(),
+                    localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
+                      DefaultMaterialLocalizations.delegate,
+                      DefaultWidgetsLocalizations.delegate,
+                    ],
+                  );
                 }
               } else {
                 return Scaffold(
