@@ -20,15 +20,15 @@ class _TabbarState extends State<Tabbar> {
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
-            title: Text('Home'),
+            title: Text('Curiosity'),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.message),
-            title: Text('Messages'),
+            title: Text('Opportunity'),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
-            title: Text('Profile'),
+            title: Text('Spirit'),
           ),
         ],
       ),
