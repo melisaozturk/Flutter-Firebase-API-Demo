@@ -40,12 +40,12 @@ class _TabbarState extends State<Tabbar> {
         } else if (index == 1) {
           return CupertinoTabView(
             navigatorKey: secondTabNavKey,
-            builder: (BuildContext context) => SampleTab(),
+            builder: (BuildContext context) => HomePage(),
           );
         } else {
           return CupertinoTabView(
             navigatorKey: thirdTabNavKey,
-            builder: (BuildContext context) => SampleTab(),
+            builder: (BuildContext context) => HomePage(),
           );
         }
       },
@@ -58,6 +58,20 @@ class SampleTab extends StatelessWidget {
   Widget build(BuildContext context) {
     return MyTopBar(
       uniqueHeroTag: 'sample',
+      child: Container(
+        child: Center(
+          child: Text('Logout'),
+        ),
+      ),
+    );
+  }
+}
+
+class ProfileTab extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MyTopBar(
+      uniqueHeroTag: 'profile',
       child: Container(
         child: Center(),
       ),

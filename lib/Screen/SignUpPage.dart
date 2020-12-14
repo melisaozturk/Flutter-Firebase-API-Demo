@@ -33,8 +33,8 @@ class _SignUpState extends State<SignUp> {
   @override
   Widget build(BuildContext context) {
     return MyTopBar(
-      text: "Sign In",
-      uniqueHeroTag: "signin",
+      text: "Sign Up",
+      uniqueHeroTag: "signup",
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Container(
