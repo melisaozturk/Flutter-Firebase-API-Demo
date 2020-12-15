@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_firebase_demo/Widgets/HomeWidgetItem.dart';
+import 'package:flutter_firebase_demo/Widgets/PhotosListItem.dart';
 import '../Model/Photos.dart';
 import '../ViewModel/ListViewModel.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:flutter_firebase_demo/NoInternetConnection.dart';
 
-class HomeWidget extends StatelessWidget {
+class PhotosPanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScopedModelDescendant<ListViewModel>(
@@ -25,7 +25,7 @@ class HomeWidget extends StatelessWidget {
                     itemCount: photos == null ? 0 : photos.length,
                     itemBuilder: (_, int index) {
                       var photo = photos[index];
-                      return PhotosListItem(Photos: photo);
+                      return PhotosListItem(photo: photo);
                     },
                   );
                 } else if (snapshot.hasError) {

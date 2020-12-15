@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_firebase_demo/PageUtil.dart';
+import 'package:flutter_firebase_demo/Widgets/PhotosPanel.dart';
 import 'package:http/http.dart';
 import 'dart:convert';
 import '../Model/Photos.dart';
@@ -66,7 +67,7 @@ class _HomePageState extends State<HomePage> {
             child: Center(
                child: Column(
                  children: <Widget>[
-                   HomeWidget()
+                   PhotosPanel()
                  ],
                ),
             ),
