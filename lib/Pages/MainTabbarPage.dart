@@ -1,17 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_firebase_demo/PageUtil.dart';
-import 'package:flutter_firebase_demo/Screen/HomePage.dart';
+import 'package:flutter_firebase_demo/Pages/HomePage.dart';
+import 'package:flutter_firebase_demo/ViewModel/ListViewModel.dart';
+import '../ViewModel/ListViewModel.dart';
+import 'dart:async';
 
-class Tabbar extends StatefulWidget {
+import 'package:flutter_firebase_demo/Pages/MainTabbarPage.dart';
+import 'package:scoped_model/scoped_model.dart';
+
+
+class MainTabbarPage extends StatefulWidget {
+
+  final ListViewModel listViewModel;
+
+  MainTabbarPage({@required this.listViewModel});
+
   @override
-  _TabbarState createState() => _TabbarState();
+  _MainTabbarPageState createState() => _MainTabbarPageState();
 }
 
-class _TabbarState extends State<Tabbar> {
+class _MainTabbarPageState extends State<MainTabbarPage> {
   final GlobalKey<NavigatorState> firstTabNavKey = GlobalKey<NavigatorState>();
   final GlobalKey<NavigatorState> secondTabNavKey = GlobalKey<NavigatorState>();
   final GlobalKey<NavigatorState> thirdTabNavKey = GlobalKey<NavigatorState>();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    listViewModel = widget.listViewModel;
+  }
+  var listViewModel;
 
   @override
   Widget build(BuildContext context) {
@@ -36,16 +56,17 @@ class _TabbarState extends State<Tabbar> {
         if (index == 0) {
           return CupertinoTabView(
               navigatorKey: firstTabNavKey,
-              builder: (BuildContext context) => HomePage());
+              builder: (BuildContext context) => HomePage(listViewModel: listViewModel)
+          );
         } else if (index == 1) {
           return CupertinoTabView(
             navigatorKey: secondTabNavKey,
-            builder: (BuildContext context) => HomePage(),
+            builder: (BuildContext context) => HomePage(listViewModel: listViewModel),
           );
         } else {
           return CupertinoTabView(
             navigatorKey: thirdTabNavKey,
-            builder: (BuildContext context) => HomePage(),
+            builder: (BuildContext context) => HomePage(listViewModel: listViewModel),
           );
         }
       },

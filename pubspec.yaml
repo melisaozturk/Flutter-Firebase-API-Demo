@@ -15,6 +15,7 @@ dependencies:
   firebase_auth: ^0.18.4
   flutter_facebook_auth: ^1.0.0
   http: ^0.12.2
+  scoped_model: ^0.3.0
 
 dev_dependencies:
   flutter_test:

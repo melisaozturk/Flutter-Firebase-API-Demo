@@ -1,11 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-//import 'package:flutter_firebase_demo/Screen/HomePage.dart';
-import 'package:flutter_firebase_demo/Screen/SignInPage.dart';
+import 'package:flutter_firebase_demo/Pages/SignInPage.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_firebase_demo/Screen/TabbarPage.dart';
+import 'package:flutter_firebase_demo/Pages/MainTabbarPage.dart';
+import 'package:flutter_firebase_demo/Service/ApiClient.dart';
+import 'ViewModel/ListViewModel.dart';
 
+
+final ListViewModel listViewModel = ListViewModel(apiSvc: ApiClient());
 
 void main() {
   runApp(MyApp());
@@ -23,6 +26,7 @@ class MyApp extends StatelessWidget {
 }
 
 class Home extends StatefulWidget {
+
   @override
   _HomeState createState() => _HomeState();
 }
@@ -30,7 +34,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
 
   final Future<FirebaseApp> _initialization = Firebase.initializeApp();
-
+  
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -58,7 +62,7 @@ class _HomeState extends State<Home> {
                   return SignIn();
                 } else {
                   return  new CupertinoApp(
-                    home: new Tabbar(),
+                    home: new MainTabbarPage(listViewModel: listViewModel),
                     localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
                       DefaultMaterialLocalizations.delegate,
                       DefaultWidgetsLocalizations.delegate,
