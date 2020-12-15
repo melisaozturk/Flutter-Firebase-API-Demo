@@ -146,7 +146,7 @@ class _SignInState extends State<SignIn> {
                     color: Colors.lightGreen,
                   ),
 
-                  /// if not sign up
+                  /// sign up
                   CupertinoButton(
                     onPressed: () async {
                       Navigator.push(

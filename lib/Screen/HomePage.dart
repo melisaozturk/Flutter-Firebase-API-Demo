@@ -12,22 +12,22 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
   List<Photo> photoArray = new List<Photo>();
 
   void getPhotos() async {
-    Response res = await get("https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos?sol=1000&page=2&api_key=r85lmJmv5IJHyXatxt9big3KnbKA4lv7oN3P57vz");
+    Response res = await get(
+        "https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos?sol=1000&page=2&api_key=r85lmJmv5IJHyXatxt9big3KnbKA4lv7oN3P57vz");
 
     var data = await jsonDecode(res.body);
 
     setState(() {
-    for (var i= 0; i < data.lenght; i++) {
-      Photo photo = new Photo();
-      photo.rover.name = data[i]['rover']['name'];
-      photo.img_src = data[i]['img_src'];
+      for (var i = 0; i < data.lenght; i++) {
+        Photo photo = new Photo();
+        photo.rover.name = data[i]['rover']['name'];
+        photo.img_src = data[i]['img_src'];
 
-      photoArray.add(photo);
-    }
+        photoArray.add(photo);
+      }
     });
   }
 
@@ -36,21 +36,22 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     getPhotos();
   }
+
   @override
   Widget build(BuildContext context) {
     return MyTopBar(
       text: "HomePage",
       uniqueHeroTag: 'tab1',
-      child: Container(
-        child: ListView(
-            /*child: RaisedButton(
-          onPressed: () async {
-            await FirebaseAuth.instance.signOut();
-            await FacebookAuth.instance.logOut();
-          },
-          child: Text('Logout'),
-        )*/
-        ),
+      child: Center(
+       // children: [
+         child: RaisedButton(
+            onPressed: () async {
+              await FirebaseAuth.instance.signOut();
+              await FacebookAuth.instance.logOut();
+            },
+            child: Text("Logout"),
+          )
+       // ],
       ),
     );
   }
