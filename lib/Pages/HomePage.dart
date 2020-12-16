@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
@@ -53,6 +54,7 @@ class _HomePageState extends State<HomePage> {
         model: widget.listViewModel,
           child: Column(
             children: [
+              Platform.isIOS ? SizedBox(height: 100,) : SizedBox(height: 0,),
               FloatingActionButton(
                 onPressed: () async {
                   await FirebaseAuth.instance.signOut();
@@ -61,7 +63,7 @@ class _HomePageState extends State<HomePage> {
                 child: Text("SignOut"),
                 backgroundColor: Colors.green,
               ),
-              SizedBox(height: 20,),
+              Platform.isIOS ? SizedBox(height: 0,) : SizedBox(height: 20,),
               PhotosPanel(),
             ],
         ),
