@@ -8,7 +8,6 @@ import 'package:scoped_model/scoped_model.dart';
 import '../ViewModel/ListViewModel.dart';
 import 'dart:async';
 
-
 class HomePage extends StatefulWidget {
   final ListViewModel listViewModel;
   final int tabbarIndex;
@@ -21,6 +20,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  get floatingActionButton => null;
+
   Future loadData() async {
     switch (widget.tabbarIndex) {
       case 0:
@@ -48,42 +49,23 @@ class _HomePageState extends State<HomePage> {
     return MyTopBar(
       text: "HomePage",
       uniqueHeroTag: 'tab1',
-       child: ScopedModel<ListViewModel>(
-           model: widget.listViewModel,
-             child: Center(
-             child: Column(
-               children: [
-                 RaisedButton(
-                   onPressed: () async {
-                     await FirebaseAuth.instance.signOut();
-                     await FacebookAuth.instance.logOut();
-                   },
-                   child: Text("Logout"),
-                 ),
-                 PhotosPanel()
-               ],
-             ),
-             )
-
-       )
+      child: ScopedModel<ListViewModel>(
+        model: widget.listViewModel,
+          child: Column(
+            children: [
+              FloatingActionButton(
+                onPressed: () async {
+                  await FirebaseAuth.instance.signOut();
+                  await FacebookAuth.instance.logOut();
+                },
+                child: Text("SignOut"),
+                backgroundColor: Colors.green,
+              ),
+              SizedBox(height: 20,),
+              PhotosPanel(),
+            ],
+        ),
+      ),
     );
   }
 }
-
-
-/*
-
-new Expanded(child: PhotosPanel());
-SizedBox(height: 20,)
- */
-
-
-/*
-RaisedButton(
-                 onPressed: () async {
-                   await FirebaseAuth.instance.signOut();
-                   await FacebookAuth.instance.logOut();
-                 },
-                 child: Text("Logout"),
-               ),
- *///PhotosPanel()
