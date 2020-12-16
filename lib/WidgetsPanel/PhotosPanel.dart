@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_firebase_demo/Widgets/PhotosListItem.dart';
+import 'package:flutter_firebase_demo/WidgetsPanel/PhotosListItem.dart';
 import '../Model/Photos.dart';
 import '../ViewModel/ListViewModel.dart';
 import 'package:scoped_model/scoped_model.dart';
@@ -21,13 +21,15 @@ class PhotosPanel extends StatelessWidget {
               case ConnectionState.done:
                 if (snapshot.hasData) {
                   var photos = snapshot.data;
-                  return ListView.builder(
-                    itemCount: photos == null ? 0 : photos.length,
-                    itemBuilder: (_, int index) {
-                      var photo = photos[index];
-                      return PhotosListItem(photo: photo);
-                    },
-                  );
+                  return Column(children: <Widget>[
+                    ListView.builder(
+                      itemCount: photos == null ? 0 : photos.length,
+                      itemBuilder: (_, int index) {
+                        var photo = photos[index];
+                        return PhotosListItem(photo: photo);
+                      },
+                    )
+                  ]);
                 } else if (snapshot.hasError) {
                   return NoInternetConnection(
                     action: () async {

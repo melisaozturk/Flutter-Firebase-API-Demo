@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_firebase_demo/PageUtil.dart';
 import 'package:flutter_firebase_demo/Pages/HomePage.dart';
 import 'package:flutter_firebase_demo/ViewModel/ListViewModel.dart';
 import '../ViewModel/ListViewModel.dart';
-import 'dart:async';
 
-import 'package:flutter_firebase_demo/Pages/MainTabbarPage.dart';
-import 'package:scoped_model/scoped_model.dart';
 
 class MainTabbarPage extends StatefulWidget {
 
@@ -26,7 +22,6 @@ class _MainTabbarPageState extends State<MainTabbarPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     listViewModel = widget.listViewModel;
   }
@@ -69,32 +64,6 @@ class _MainTabbarPageState extends State<MainTabbarPage> {
           );
         }
       },
-    );
-  }
-}
-
-class SampleTab extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MyTopBar(
-      uniqueHeroTag: 'sample',
-      child: Container(
-        child: Center(
-          child: Text('Logout'),
-        ),
-      ),
-    );
-  }
-}
-
-class ProfileTab extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MyTopBar(
-      uniqueHeroTag: 'profile',
-      child: Container(
-        child: Center(),
-      ),
     );
   }
 }

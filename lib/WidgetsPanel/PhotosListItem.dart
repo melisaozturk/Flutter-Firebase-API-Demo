@@ -1,6 +1,4 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_firebase_demo/Model/Photos.dart';
 
 
@@ -17,6 +15,9 @@ class PhotosListItem extends StatelessWidget {
         ListTile(
           contentPadding: const EdgeInsets.symmetric(horizontal: 20.0),
           title: name,
+          leading: CircleAvatar(
+            backgroundImage: NetworkImage(photo.imgSrc),
+          ),
         ),
         Divider(),
       ],
