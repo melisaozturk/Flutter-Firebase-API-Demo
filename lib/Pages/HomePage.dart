@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_firebase_demo/PageUtil.dart';
 import 'package:flutter_firebase_demo/Service/ApiClient.dart';
 import 'package:flutter_firebase_demo/WidgetsPanel/PhotosPanel.dart';
@@ -48,8 +50,40 @@ class _HomePageState extends State<HomePage> {
       uniqueHeroTag: 'tab1',
        child: ScopedModel<ListViewModel>(
            model: widget.listViewModel,
-             child: PhotosPanel()
+             child: Center(
+             child: Column(
+               children: [
+                 RaisedButton(
+                   onPressed: () async {
+                     await FirebaseAuth.instance.signOut();
+                     await FacebookAuth.instance.logOut();
+                   },
+                   child: Text("Logout"),
+                 ),
+                 PhotosPanel()
+               ],
+             ),
+             )
+
        )
     );
   }
 }
+
+
+/*
+
+new Expanded(child: PhotosPanel());
+SizedBox(height: 20,)
+ */
+
+
+/*
+RaisedButton(
+                 onPressed: () async {
+                   await FirebaseAuth.instance.signOut();
+                   await FacebookAuth.instance.logOut();
+                 },
+                 child: Text("Logout"),
+               ),
+ *///PhotosPanel()

@@ -1,6 +1,4 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_firebase_demo/WidgetsPanel/PhotosListItem.dart';
 import '../Model/Photos.dart';
 import '../ViewModel/ListViewModel.dart';
@@ -24,13 +22,6 @@ class PhotosPanel extends StatelessWidget {
                 if (snapshot.hasData) {
                   var photos = snapshot.data;
                   return Column(children: <Widget>[
-                     RaisedButton(
-                      onPressed: () async {
-                        await FirebaseAuth.instance.signOut();
-                        await FacebookAuth.instance.logOut();
-                      },
-                      child: Text("Logout"),
-                    ),
                     ListView.builder(
                       itemCount: photos == null ? 0 : photos.length,
                       itemBuilder: (_, int index) {
