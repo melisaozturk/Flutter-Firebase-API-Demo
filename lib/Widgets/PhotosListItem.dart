@@ -10,7 +10,7 @@ class PhotosListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var title = Text(photo.rover.name ?? "");
-
+    print("title: ${title}");
     return Column(
       children: <Widget>[
         ListTile(

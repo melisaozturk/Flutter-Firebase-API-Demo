@@ -21,18 +21,15 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       home: Home(),
     );
-
   }
 }
 
 class Home extends StatefulWidget {
-
   @override
   _HomeState createState() => _HomeState();
 }
 
 class _HomeState extends State<Home> {
-
   final Future<FirebaseApp> _initialization = Firebase.initializeApp();
   
   @override

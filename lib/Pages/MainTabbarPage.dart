@@ -9,7 +9,6 @@ import 'dart:async';
 import 'package:flutter_firebase_demo/Pages/MainTabbarPage.dart';
 import 'package:scoped_model/scoped_model.dart';
 
-
 class MainTabbarPage extends StatefulWidget {
 
   final ListViewModel listViewModel;
@@ -43,11 +42,11 @@ class _MainTabbarPageState extends State<MainTabbarPage> {
             title: Text('Curiosity'),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.message),
+            icon: Icon(Icons.home),
             title: Text('Opportunity'),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person),
+            icon: Icon(Icons.home),
             title: Text('Spirit'),
           ),
         ],
@@ -56,17 +55,17 @@ class _MainTabbarPageState extends State<MainTabbarPage> {
         if (index == 0) {
           return CupertinoTabView(
               navigatorKey: firstTabNavKey,
-              builder: (BuildContext context) => HomePage(listViewModel: listViewModel)
+              builder: (BuildContext context) => HomePage(listViewModel: listViewModel, tabbarIndex: index)
           );
         } else if (index == 1) {
           return CupertinoTabView(
             navigatorKey: secondTabNavKey,
-            builder: (BuildContext context) => HomePage(listViewModel: listViewModel),
+            builder: (BuildContext context) => HomePage(listViewModel: listViewModel, tabbarIndex: index),
           );
         } else {
           return CupertinoTabView(
             navigatorKey: thirdTabNavKey,
-            builder: (BuildContext context) => HomePage(listViewModel: listViewModel),
+            builder: (BuildContext context) => HomePage(listViewModel: listViewModel, tabbarIndex: index),
           );
         }
       },
