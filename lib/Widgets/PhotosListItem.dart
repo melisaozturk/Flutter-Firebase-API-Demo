@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_firebase_demo/Model/Photos.dart';
 
 
@@ -9,13 +11,12 @@ class PhotosListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var title = Text(photo.rover.name ?? "");
-    print("title: ${title}");
+    var name = Text(photo.rover.name ?? "");
     return Column(
       children: <Widget>[
         ListTile(
           contentPadding: const EdgeInsets.symmetric(horizontal: 20.0),
-          title: title,
+          title: name,
         ),
         Divider(),
       ],

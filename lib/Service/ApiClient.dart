@@ -11,7 +11,7 @@ enum ServiceSource {
 }
 
 class ApiClient implements IApiClient {
-  final _baseUrl = 'https://api.nasa.gov/mars-photos/api/v1/rovers';
+  final _baseUrl = 'https://api.nasa.gov';
   http.Client _client = http.Client();
 
   set client(http.Client value) => _client = value;
@@ -26,13 +26,13 @@ class ApiClient implements IApiClient {
     String url;
     switch (serviceSource) {
       case ServiceSource.curiosity:
-        url = '$_baseUrl/curiosity/photos?sol=1000&api_key=EJuEQWttb31Pn9z1x14eeOq9GXwpDQN2q7kXuuW4';
+        url = '$_baseUrl/mars-photos/api/v1/rovers/curiosity/photos?sol=1000&api_key=EJuEQWttb31Pn9z1x14eeOq9GXwpDQN2q7kXuuW4';
         break;
       case ServiceSource.spirit:
-        url = '$_baseUrl/spirit/photos?sol=1000&api_key=EJuEQWttb31Pn9z1x14eeOq9GXwpDQN2q7kXuuW4';
+        url = '$_baseUrl/mars-photos/api/v1/rovers/spirit/photos?sol=1000&api_key=EJuEQWttb31Pn9z1x14eeOq9GXwpDQN2q7kXuuW4';
         break;
       case ServiceSource.opportunity:
-        url = '$_baseUrl/opportunity/photos?sol=1000&api_key=EJuEQWttb31Pn9z1x14eeOq9GXwpDQN2q7kXuuW4';
+        url = '$_baseUrl/mars-photos/api/v1/rovers/opportunity/photos?sol=1000&api_key=EJuEQWttb31Pn9z1x14eeOq9GXwpDQN2q7kXuuW4';
         break;
     }
 
@@ -41,8 +41,8 @@ class ApiClient implements IApiClient {
     if (response.statusCode == 200) {
       var data = json.decode(response.body);
 
-      List<dynamic> filmsData = data['photos'];
-      List<Photos> photos = filmsData.map((f) => Photos.fromMap(f)).toList();
+      List<dynamic> photosData = data['photos'];
+      List<Photos> photos = photosData.map((p) => Photos.fromMap(p)).toList();
 
       return photos;
     } else {

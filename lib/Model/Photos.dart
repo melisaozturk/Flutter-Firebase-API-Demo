@@ -15,10 +15,10 @@ class Photos {
 });
 
   Photos.fromMap(Map<String, dynamic> map) {
-    id = int.parse(map['id']);
-    sol = int.parse(map['sol']);
-    camera = map['camera'];
-    rover = map['rover'];
+    id = map['id'];
+    sol = map['sol'];
+    camera = Camera.fromMap(map['camera']);
+    rover = Rover.fromMap(map['rover']);
     imgSrc = map['img_src'];
     earthDate = map['earth_date'];
   }
@@ -36,8 +36,8 @@ class Camera {
 });
 
   Camera.fromMap(Map<String, dynamic> map) {
-    id = int.parse(map['id']);
-    roverId = int.parse(map['rover_id']);
+    id = map['id'];
+    roverId = map['rover_id'];
     name = map['name'];
     fullName = map['full_name'];
   }
@@ -57,7 +57,7 @@ class Rover {
   });
 
   Rover.fromMap(Map<String, dynamic> map) {
-  id = int.parse(map['id']);
+  id = map['id'];
   name = map['name'];
   landingDate = map['landing_date'];
   launchDate = map['launch_date'];
